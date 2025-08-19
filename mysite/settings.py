@@ -2,13 +2,10 @@ from pathlib import Path
 import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
+VWORLD_API_KEY = "2999371B-F71D-32DA-85C3-ED9AB3C48403"
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-7c9&_=)9ipufpdq)u5=k3bw&5rfl8jih39n%#0vqqa=2&60msx'
+SECRET_KEY = '2999371B-F71D-32DA-85C3-ED9AB3C48403'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
