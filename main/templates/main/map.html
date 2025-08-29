@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>AutoSolar</title>
 
-  <!-- Inter + Noto Sans KR -->
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
 
@@ -31,16 +31,14 @@
       <button id="btnHelp"   class="btn btn-outline btn-sm">도움말</button>
     </div>
 
-    <!-- 필지 단위 보기 -->
     <label class="chip chip-switch">
       <input type="checkbox" id="chkParcel">
       <span>필지 단위 보기</span>
     </label>
   </header>
 
-  <!-- Main -->
   <main class="app-main">
-    <!-- Left rail (icons) -->
+    <!-- Left rail -->
     <aside class="iconbar" id="leftbar">
       <button class="i active" data-tab="filter" title="필터"><i data-lucide="sliders-horizontal"></i></button>
       <button class="i" data-tab="report" title="프로젝트/보고서"><i data-lucide="file-text"></i></button>
@@ -49,11 +47,11 @@
       <button class="i" data-tab="auth" title="로그인"><i data-lucide="user-round"></i></button>
     </aside>
 
-    <!-- Sidebar : Filters -->
+    <!-- Filters -->
     <aside class="sidebar sidebar-accordion" id="panel-filter">
-      <!-- 1. 지목 -->
-      <div class="acc-item open" data-key="landuse" style="--chip: var(--c-landuse)">
-        <button class="acc-head" type="button" aria-expanded="true">
+      <!-- 지목 (기본: 닫힘) -->
+      <div class="acc-item" data-key="landuse" style="--chip: var(--c-landuse)">
+        <button class="acc-head" type="button" aria-expanded="false">
           <span class="chip-dot" aria-hidden="true"></span>
           <span class="acc-title">지목</span>
           <span class="acc-meta">복수 선택</span>
@@ -64,8 +62,9 @@
         </button>
         <div class="acc-body">
           <div class="acc-row controls">
-            <span>투명도</span>
+            <span class="label">투명도</span>
             <input class="range op" type="range" min="0" max="100" value="60">
+            <span class="op-val">60%</span>
           </div>
           <label class="pill"><input type="checkbox" class="opt" value="farmland" data-color="--c-landuse-1">농지</label>
           <label class="pill"><input type="checkbox" class="opt" value="salt"     data-color="--c-landuse-2">염전</label>
@@ -73,7 +72,7 @@
         </div>
       </div>
 
-      <!-- 2. 용도지역 -->
+      <!-- 용도지역 -->
       <div class="acc-item" data-key="zoning" style="--chip: var(--c-zoning)">
         <button class="acc-head" type="button" aria-expanded="false">
           <span class="chip-dot" aria-hidden="true"></span>
@@ -86,13 +85,14 @@
         </button>
         <div class="acc-body">
           <div class="acc-row controls">
-            <span>투명도</span>
+            <span class="label">투명도</span>
             <input class="range op" type="range" min="0" max="100" value="55">
+            <span class="op-val">55%</span>
           </div>
         </div>
       </div>
 
-      <!-- 3. 표고 -->
+      <!-- 표고 -->
       <div class="acc-item" data-key="elevation" style="--chip: var(--c-elevation)">
         <button class="acc-head" type="button" aria-expanded="false">
           <span class="chip-dot" aria-hidden="true"></span>
@@ -105,17 +105,18 @@
         </button>
         <div class="acc-body">
           <div class="acc-row controls">
-            <span>투명도</span>
+            <span class="label">투명도</span>
             <input class="range op" type="range" min="0" max="100" value="45">
+            <span class="op-val">45%</span>
           </div>
           <div class="acc-row slider">
             <input type="range" class="range val" min="0" max="500" step="10" value="0">
-            <span><b class="valText">0</b> m 이상만 표시</span>
+            <span class="muted"><b class="valText">0</b> m 이상만 표시</span>
           </div>
         </div>
       </div>
 
-      <!-- 4. 경사 -->
+      <!-- 경사 -->
       <div class="acc-item" data-key="slope" style="--chip: var(--c-slope)">
         <button class="acc-head" type="button" aria-expanded="false">
           <span class="chip-dot" aria-hidden="true"></span>
@@ -128,17 +129,18 @@
         </button>
         <div class="acc-body">
           <div class="acc-row controls">
-            <span>투명도</span>
+            <span class="label">투명도</span>
             <input class="range op" type="range" min="0" max="100" value="45">
+            <span class="op-val">45%</span>
           </div>
           <div class="acc-row slider">
             <input type="range" class="range val" min="0" max="50" step="1" value="0">
-            <span><b class="valText">0</b>% 이하만 표시</span>
+            <span class="muted"><b class="valText">0</b>% 이하만 표시</span>
           </div>
         </div>
       </div>
 
-      <!-- 5. 생태자연도 -->
+      <!-- 생태자연도 -->
       <div class="acc-item" data-key="eco" style="--chip: var(--c-eco)">
         <button class="acc-head" type="button" aria-expanded="false">
           <span class="chip-dot" aria-hidden="true"></span>
@@ -151,13 +153,14 @@
         </button>
         <div class="acc-body">
           <div class="acc-row controls">
-            <span>투명도</span>
+            <span class="label">투명도</span>
             <input class="range op" type="range" min="0" max="100" value="55">
+            <span class="op-val">55%</span>
           </div>
         </div>
       </div>
 
-      <!-- 6. 하천 -->
+      <!-- 하천 -->
       <div class="acc-item" data-key="river" style="--chip: var(--c-river)">
         <button class="acc-head" type="button" aria-expanded="false">
           <span class="chip-dot" aria-hidden="true"></span>
@@ -170,15 +173,16 @@
         </button>
         <div class="acc-body">
           <div class="acc-row controls">
-            <span>투명도</span>
+            <span class="label">투명도</span>
             <input class="range op" type="range" min="0" max="100" value="60">
+            <span class="op-val">60%</span>
           </div>
           <label class="pill"><input type="checkbox" class="opt" value="main"   data-color="--c-river-1">하천</label>
           <label class="pill"><input type="checkbox" class="opt" value="branch" data-color="--c-river-2">소하천</label>
         </div>
       </div>
 
-      <!-- 7. 자연공원 -->
+      <!-- 자연공원 -->
       <div class="acc-item" data-key="park" style="--chip: var(--c-park)">
         <button class="acc-head" type="button" aria-expanded="false">
           <span class="chip-dot" aria-hidden="true"></span>
@@ -191,13 +195,14 @@
         </button>
         <div class="acc-body">
           <div class="acc-row controls">
-            <span>투명도</span>
+            <span class="label">투명도</span>
             <input class="range op" type="range" min="0" max="100" value="50">
+            <span class="op-val">50%</span>
           </div>
         </div>
       </div>
 
-      <!-- 8. 보호구역 -->
+      <!-- 보호구역 -->
       <div class="acc-item" data-key="protection" style="--chip: var(--c-protection)">
         <button class="acc-head" type="button" aria-expanded="false">
           <span class="chip-dot" aria-hidden="true"></span>
@@ -210,8 +215,9 @@
         </button>
         <div class="acc-body">
           <div class="acc-row controls">
-            <span>투명도</span>
+            <span class="label">투명도</span>
             <input class="range op" type="range" min="0" max="100" value="50">
+            <span class="op-val">50%</span>
           </div>
           <label class="pill"><input type="checkbox" class="opt" value="water"   data-color="--c-prot-1">상수원</label>
           <label class="pill"><input type="checkbox" class="opt" value="wetland" data-color="--c-prot-2">습지</label>
@@ -219,7 +225,7 @@
         </div>
       </div>
 
-      <!-- 9. 문화재 -->
+      <!-- 문화재 -->
       <div class="acc-item" data-key="heritage" style="--chip: var(--c-heritage)">
         <button class="acc-head" type="button" aria-expanded="false">
           <span class="chip-dot" aria-hidden="true"></span>
@@ -232,13 +238,14 @@
         </button>
         <div class="acc-body">
           <div class="acc-row controls">
-            <span>투명도</span>
+            <span class="label">투명도</span>
             <input class="range op" type="range" min="0" max="100" value="50">
+            <span class="op-val">50%</span>
           </div>
         </div>
       </div>
 
-      <!-- 10. 이격거리 -->
+      <!-- 이격거리 -->
       <div class="acc-item" data-key="buffer" style="--chip: var(--c-buffer)">
         <button class="acc-head" type="button" aria-expanded="false">
           <span class="chip-dot" aria-hidden="true"></span>
@@ -251,15 +258,16 @@
         </button>
         <div class="acc-body">
           <div class="acc-row controls">
-            <span>투명도</span>
+            <span class="label">투명도</span>
             <input class="range op" type="range" min="0" max="100" value="55">
+            <span class="op-val">55%</span>
           </div>
           <label class="pill"><input type="checkbox" class="opt" value="residential" data-color="--c-buffer-1">주거</label>
           <label class="pill"><input type="checkbox" class="opt" value="road"        data-color="--c-buffer-2">도로</label>
         </div>
       </div>
 
-      <!-- 11. 계통 -->
+      <!-- 계통 -->
       <div class="acc-item" data-key="grid" style="--chip: var(--c-grid)">
         <button class="acc-head" type="button" aria-expanded="false">
           <span class="chip-dot" aria-hidden="true"></span>
@@ -272,8 +280,9 @@
         </button>
         <div class="acc-body">
           <div class="acc-row controls">
-            <span>투명도</span>
+            <span class="label">투명도</span>
             <input class="range op" type="range" min="0" max="100" value="55">
+            <span class="op-val">55%</span>
           </div>
         </div>
       </div>
@@ -299,11 +308,10 @@
 
 <!-- Leaflet -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin="anonymous"></script>
-<!-- Lucide (icons) -->
+<!-- Lucide -->
 <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 <script>lucide.createIcons();</script>
 
-<!-- VWorld API key -->
 <script>window.VWORLD_API_KEY = "{{ VWORLD_API_KEY }}";</script>
 
 <!-- App JS -->
