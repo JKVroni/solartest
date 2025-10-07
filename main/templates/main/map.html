@@ -1,7 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="ko">
-
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -9,17 +8,14 @@
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+KR:wght@400;500;700&display=swap"
-    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
 
   <!-- Leaflet -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="anonymous">
 
   <!-- App CSS -->
-  <link rel="stylesheet" href="{% static 'main/style.css' %}">
+  <link rel="stylesheet" href="{% static 'main/style.css' %}?v=r5">
 </head>
-
 <body>
   <div class="app">
     <!-- Topbar -->
@@ -51,10 +47,9 @@
         <button class="i" data-tab="auth" title="로그인"><i data-lucide="user-round"></i></button>
       </aside>
 
-      <!-- Filters -->
+      <!-- ===== Filters (원본 그대로) ===== -->
       <aside class="sidebar sidebar-accordion" id="panel-filter">
-        <!-- ===== A 그룹 ===== -->
-        <!-- 지목 -->
+        <!-- ===== A 그룹: 지목 ===== -->
         <div class="acc-item" data-key="landuse" data-group="A"
           style="--tint: var(--a-land-tint); --tgl-color: var(--key);">
           <button class="acc-head" type="button" aria-expanded="false">
@@ -71,7 +66,6 @@
               <input class="range op" type="range" min="0" max="100" value="100">
               <span class="op-val">100%</span>
             </div>
-            <!-- 초기 checked 제거 -->
             <label class="pill"><input type="checkbox" class="opt" value="farmland"
                 data-color="--a-land-farmland">농지</label>
             <label class="pill"><input type="checkbox" class="opt" value="forest"
@@ -86,7 +80,7 @@
           </div>
         </div>
 
-        <!-- 소유자 -->
+        <!-- ===== A 그룹: 소유자 ===== -->
         <div class="acc-item" data-key="owner" data-group="A"
           style="--tint: var(--a-own-tint); --tgl-color: var(--key);">
           <button class="acc-head" type="button" aria-expanded="false">
@@ -103,7 +97,6 @@
               <input class="range op" type="range" min="0" max="100" value="100">
               <span class="op-val">100%</span>
             </div>
-            <!-- 초기 checked 제거 -->
             <label class="pill"><input type="checkbox" class="opt" value="public"
                 data-color="--a-own-public">국유지</label>
             <label class="pill"><input type="checkbox" class="opt" value="shared"
@@ -114,7 +107,7 @@
           </div>
         </div>
 
-        <!-- ===== B 그룹 ===== -->
+        <!-- ===== B 그룹 이후(용도지역, 생태, 산사태, 식생, 도시생태, 이격거리) ===== -->
         <div class="acc-item" data-key="zoning" data-group="B" data-bmode="single"
           style="--tint: var(--b-zoning); --strip: var(--b-zoning); --tgl-color: var(--b-zoning);">
           <button class="acc-head" type="button" aria-expanded="false">
@@ -162,12 +155,6 @@
               <input class="range op" type="range" min="0" max="100" value="55">
               <span class="op-val">55%</span>
             </div>
-            <div class="legend-pills">
-              <span class="legend-pill" style="--legend:var(--b-eco-2)">2등급</span>
-              <span class="legend-pill" style="--legend:var(--b-eco-3)">3등급</span>
-              <span class="legend-pill" style="--legend:var(--b-eco-sp)">별도관리</span>
-              <span class="legend-pill forbid">1등급(제척)</span>
-            </div>
           </div>
         </div>
 
@@ -192,12 +179,6 @@
               <span class="label">투명도</span>
               <input class="range op" type="range" min="0" max="100" value="55">
               <span class="op-val">55%</span>
-            </div>
-            <div class="legend-pills">
-              <span class="legend-pill" style="--legend:var(--b-slide-3)">3</span>
-              <span class="legend-pill" style="--legend:var(--b-slide-4)">4</span>
-              <span class="legend-pill" style="--legend:var(--b-slide-5)">5</span>
-              <span class="legend-pill forbid">1·2(제척)</span>
             </div>
           </div>
         </div>
@@ -224,11 +205,6 @@
               <input class="range op" type="range" min="0" max="100" value="55">
               <span class="op-val">55%</span>
             </div>
-            <div class="legend-pills">
-              <span class="legend-pill" style="--legend:var(--b-veg-2)">Ⅱ</span>
-              <span class="legend-pill" style="--legend:var(--b-veg-3)">Ⅲ</span>
-              <span class="legend-pill forbid">Ⅰ(제척)</span>
-            </div>
           </div>
         </div>
 
@@ -254,15 +230,10 @@
               <input class="range op" type="range" min="0" max="100" value="55">
               <span class="op-val">55%</span>
             </div>
-            <div class="legend-pills">
-              <span class="legend-pill" style="--legend:var(--b-bio-3)">3</span>
-              <span class="legend-pill" style="--legend:var(--b-bio-4)">4</span>
-              <span class="legend-pill" style="--legend:var(--b-bio-5)">5</span>
-              <span class="legend-pill forbid">1·2(제척)</span>
-            </div>
           </div>
         </div>
 
+        <!-- ===== 이격거리 ===== -->
         <div class="acc-item" data-key="buffer" data-group="B" data-bmode="single"
           style="--tint: var(--b-buffer); --strip: var(--b-buffer); --tgl-color: var(--b-buffer);">
           <button class="acc-head" type="button" aria-expanded="false">
@@ -285,10 +256,11 @@
               <input class="range op" type="range" min="0" max="100" value="55">
               <span class="op-val">55%</span>
             </div>
+            <p class="muted">대상(주거/정온/문화재/도로 등)과의 거리 제한 미리보기</p>
           </div>
         </div>
 
-        <!-- ===== 제척(불가) ===== -->
+        <!-- ===== 제척(불가) 3종 ===== -->
         <div class="acc-item" data-key="protection" data-group="B" data-bmode="forbid"
           style="--tint: var(--c-forbid); --strip: var(--c-forbid); --tgl-color: var(--c-forbid);">
           <button class="acc-head" type="button" aria-expanded="false">
@@ -368,16 +340,19 @@
       <!-- Map -->
       <section class="map-wrap">
         <div id="map" class="map-canvas"></div>
+
         <div class="map-controls">
+          <div class="seg basemap-switch" role="group" aria-label="베이스맵 전환">
+            <button id="bm-base"   class="seg-btn active" title="기본지도">Base</button>
+            <button id="bm-sat"    class="seg-btn"         title="항공사진">Sat</button>
+            <button id="bm-hybrid" class="seg-btn"         title="하이브리드">Hybrid</button>
+          </div>
+
           <div class="ctrl-stack">
             <button id="btnZoomIn" class="ctrl">＋</button>
             <button id="btnZoomOut" class="ctrl">－</button>
             <button id="btnLocate" class="ctrl">📍</button>
           </div>
-          <button id="btnPrimaryCTA" class="fab">
-            <img class="fab-icon" src="https://unpkg.com/lucide-static@0.447.0/icons/mouse-pointer-click.svg" alt="">
-            선택 시작
-          </button>
         </div>
       </section>
     </main>
@@ -388,11 +363,13 @@
   <!-- Lucide -->
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script>lucide.createIcons();</script>
+  <!-- VectorGrid (MVT) -->
+  <script src="https://unpkg.com/leaflet.vectorgrid@1.3.0/dist/Leaflet.VectorGrid.bundled.js" crossorigin="anonymous"></script>
 
-  <script>window.VWORLD_API_KEY = "{{ VWORLD_API_KEY }}";</script>
+  <!-- 키 주입 -->
+  <script>window.VWORLD_API_KEY = "{{ VWORLD_KEY }}";</script>
 
   <!-- App JS -->
-  <script src="{% static 'main/script.js' %}"></script>
+  <script src="{% static 'main/script.js' %}?v=r5"></script>
 </body>
-
 </html>
