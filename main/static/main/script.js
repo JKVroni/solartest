@@ -302,13 +302,44 @@ document.getElementById('btnLocate')?.addEventListener('click', ()=>{
   );
 });
 
-/* ===== 탭 & Report UI ===== */
+/* ===== 탭 & Report/UI ===== */
 const main = document.querySelector('.app-main');
 function setMainMode(key){ if(!main) return; main.classList.toggle('report-wide', key==='report'); }
 const selectionBadges = L.layerGroup().addTo(map);
 let REPORT_ROWS = [];
 
-/* Report 탭 DOM */
+/* ======= 프로젝트 저장/로드 (DB 탭 연계) ======= */
+const LS_KEY = 'autosolar_projects_v1';
+let PROJECTS = [];
+
+function loadProjects(){
+  try{
+    const raw = localStorage.getItem(LS_KEY);
+    PROJECTS = raw ? JSON.parse(raw) : [];
+  }catch(_){ PROJECTS = []; }
+}
+function persistProjects(){
+  try{ localStorage.setItem(LS_KEY, JSON.stringify(PROJECTS)); }catch(_){}
+}
+function calcTotalArea(rows){ return rows.reduce((a,r)=>a+(r?.area_m2||0),0); }
+function deepCopyRows(rows){ return rows.map(r=>({ ...r, _latlng: r._latlng ? {lat:r._latlng.lat, lng:r._latlng.lng} : null })); }
+
+function showProjectOnMap(project){
+  selectionBadges.clearLayers();
+  const latlngs = [];
+  project.rows.forEach((row, i)=>{
+    if(row._latlng){
+      latlngs.push([row._latlng.lat, row._latlng.lng]);
+      addNumberBadge(i+1, row._latlng);
+    }
+  });
+  if(latlngs.length){
+    const bounds = L.latLngBounds(latlngs);
+    map.fitBounds(bounds, { padding:[40,40] });
+  }
+}
+
+/* Report 탭 DOM (X 아이콘 제거됨) */
 const reportEl = (()=>{
   const d=document.createElement('div');
   d.className='sidebar report-wrap';
@@ -332,8 +363,8 @@ const reportEl = (()=>{
             <col style="width:28px">
             <col style="width:52px">
             <col style="width:92px">
-            <col> <!-- 검토 결과 넓게 -->
-            <col style="width:68px"> <!-- 등본 좁게(아이콘 2개) -->
+            <col>
+            <col style="width:68px">
           </colgroup>
           <thead>
             <tr>
@@ -349,10 +380,9 @@ const reportEl = (()=>{
       </div>
     </div>
 
-    <!-- 저장 모달 -->
+    <!-- 저장 모달 (X 제거) -->
     <div class="modal" id="modalSave" hidden>
       <div class="modal-card">
-        <button class="modal-x" data-modal-close aria-label="닫기">×</button>
         <div class="modal-head">
           <div class="modal-icon"><i data-lucide="folder-plus"></i></div>
         </div>
@@ -370,10 +400,9 @@ const reportEl = (()=>{
       </div>
     </div>
 
-    <!-- 등본 요약 모달 -->
+    <!-- 등본 요약 모달 (X 제거) -->
     <div class="modal" id="modalDeedView" hidden>
       <div class="modal-card">
-        <button class="modal-x" data-modal-close aria-label="닫기">×</button>
         <div class="modal-head">
           <div class="modal-icon"><i data-lucide="file-text"></i></div>
         </div>
@@ -389,11 +418,28 @@ const reportEl = (()=>{
   return d;
 })();
 
+/* ===== DB 탭 DOM ===== */
+function makeDbSidebar(){
+  const d=document.createElement('div');
+  d.className='sidebar db-wrap';
+  d.innerHTML = `
+    <div class="db-toolbar card">
+      <div class="db-actions">
+        <button id="btnDbDeleteSel" class="btn btn-sm">선택 삭제</button>
+      </div>
+      <div class="summary small">총 <b id="dbCount">0</b>개 프로젝트</div>
+    </div>
+    <div class="db-list" id="dbList"></div>
+  `;
+  return d;
+}
+const dbEl = makeDbSidebar();
+
 /* 탭 */
 const tabs = {
   filter: document.getElementById('panel-filter'),
   report: reportEl,
-  db:     (()=>{ const d=document.createElement('div'); d.className='sidebar'; d.innerHTML='<div class="acc-item open"><div class="acc-body"><p class="muted">프로젝트 DB(추가 예정)</p></div></div>'; return d;})(),
+  db:     dbEl,
   auth:   (()=>{ const d=document.createElement('div'); d.className='sidebar'; d.innerHTML='<div class="acc-item open"><div class="acc-body"><p class="muted">로그인/SSO(추가 예정)</p></div></div>'; return d;})(),
 };
 document.querySelectorAll('#leftbar .i').forEach(btn=>{
@@ -406,6 +452,7 @@ document.querySelectorAll('#leftbar .i').forEach(btn=>{
     if (window.lucide?.createIcons) { window.lucide.createIcons(); }
     setMainMode(key);
     if(key==='report') refreshTable();
+    if(key==='db') renderDB();
   });
 });
 
@@ -432,8 +479,7 @@ function ensureLanduseMVT(){
   }).on('mouseover', e=>{
     const p = e.layer?.properties || {};
     const label = p.jibun || p.pnu || '지목';
-    if(e.layer && e.layer.bindTooltip){ e.layer.bindTooltip(label, {sticky:true, direction:'top'}).openTooltip();
-    }
+    if(e.layer && e.layer.bindTooltip){ e.layer.bindTooltip(label, {sticky:true, direction:'top'}).openTooltip(); }
   });
   return landuseMVT;
 }
@@ -469,34 +515,35 @@ function addNumberBadge(no, latlng){
 function redrawBadges(){ selectionBadges.clearLayers(); REPORT_ROWS.forEach((row, idx)=>{ if(row._latlng) addNumberBadge(idx+1, row._latlng); }); }
 
 /* 테이블 렌더링 */
-function refreshTable(){
-  const tbody = document.getElementById('reportBody');
-  if(!tbody) return;
-
-  REPORT_ROWS.forEach((r, i)=> r.order = i+1);
-
-  tbody.innerHTML = REPORT_ROWS.map((r,i)=>{
-    const forbid = r.result?.forbid?.length
-      ? `<span class="pill-sm warn" title="${r.result.forbid.map(x=>x.label).join(', ')}"><i data-lucide="triangle-alert"></i> 불가: ${r.result.forbid.map(x=>x.label).join(', ')}</span>`
-      : `<span class="pill-sm ok"><i data-lucide="check-circle"></i> 적합</span>`;
-
+function rowStatusPill(r){
+  return r.result?.forbid?.length
+    ? `<span class="pill-sm warn" title="${r.result.forbid.map(x=>x.label).join(', ')}"><i data-lucide="triangle-alert"></i> 불가: ${r.result.forbid.map(x=>x.label).join(', ')}</span>`
+    : `<span class="pill-sm ok"><i data-lucide="check-circle"></i> 적합</span>`;
+}
+function makeReportTableHTML(rows){
+  return rows.map((r,i)=>{
+    const forbid = rowStatusPill(r);
     const deedBtns = (r.deed?.pdf_url || r.deed?.summary_url)
       ? `<div class="deed-actions">
            ${r.deed?.summary_url ? `<button class="icon-btn" data-act="view" data-idx="${i}" title="요약 보기"><i data-lucide="eye"></i></button>`:''}
            ${r.deed?.pdf_url ? `<a class="icon-btn" href="${r.deed.pdf_url}" download title="PDF 다운로드"><i data-lucide="arrow-down-to-line"></i></a>`:''}
          </div>`
       : `<span class="muted">-</span>`;
-
     return `
       <tr>
         <td><label class="chk"><input type="checkbox" data-row="${i}"><i></i></label></td>
-        <td class="mono">${r.order}</td>
-        <td class="num">${r.area_m2.toLocaleString()}</td>
+        <td class="mono">${i+1}</td>
+        <td class="num">${(r.area_m2||0).toLocaleString()}</td>
         <td>${forbid}</td>
         <td class="deed-cell">${deedBtns}</td>
       </tr>`;
   }).join('');
-
+}
+function refreshTable(){
+  const tbody = document.getElementById('reportBody');
+  if(!tbody) return;
+  REPORT_ROWS.forEach((r, i)=> r.order = i+1);
+  tbody.innerHTML = makeReportTableHTML(REPORT_ROWS);
   if (window.lucide?.createIcons) { window.lucide.createIcons(); }
   updateSelSummary();
 }
@@ -513,7 +560,61 @@ function updateSelSummary(){
   if(elSum) elSum.textContent = sum.toLocaleString();
 }
 
-/* 테이블/모달 이벤트 */
+/* ===== DB 탭 렌더링 ===== */
+function renderDB(){
+  const list = document.getElementById('dbList');
+  const cnt = document.getElementById('dbCount');
+  if(!list || !cnt) return;
+  cnt.textContent = PROJECTS.length.toString();
+
+  if(PROJECTS.length===0){
+    list.innerHTML = `<div class="empty muted">저장된 프로젝트가 없습니다.</div>`;
+    return;
+  }
+
+  list.innerHTML = PROJECTS.map((p, idx)=>{
+    const total = calcTotalArea(p.rows).toLocaleString();
+    return `
+    <div class="db-card" data-pidx="${idx}">
+      <div class="db-head">
+        <label class="chk"><input type="checkbox" class="db-chk" data-pidx="${idx}"><i></i></label>
+        <div class="db-title">
+          <div class="proj-name">${p.name}</div>
+          <div class="proj-sub muted">총 면적 ${total} ㎡ · ${p.rows.length}개 필지</div>
+        </div>
+        <button class="db-toggle" title="열기/닫기"><i data-lucide="chevron-down"></i></button>
+      </div>
+      <div class="db-body" hidden>
+        <div class="report-table card">
+          <div class="report-scroll">
+            <table class="tbl compact">
+              <colgroup>
+                <col style="width:28px">
+                <col style="width:52px">
+                <col style="width:92px">
+                <col>
+                <col style="width:68px">
+              </colgroup>
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>No.</th>
+                  <th>면적(㎡)</th>
+                  <th>검토 결과</th>
+                  <th>등본</th>
+                </tr>
+              </thead>
+              <tbody>${makeReportTableHTML(p.rows)}</tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+  if (window.lucide?.createIcons) { window.lucide.createIcons(); }
+}
+
+/* 테이블/모달/DB 이벤트 */
 document.addEventListener('change',(e)=>{
   if(e.target.id==='chkAll'){
     document.querySelectorAll('#reportBody input[type="checkbox"]').forEach(ch=> ch.checked = e.target.checked);
@@ -523,7 +624,7 @@ document.addEventListener('change',(e)=>{
 });
 
 document.addEventListener('click',(e)=>{
-  // 삭제
+  // ===== Report: 삭제 =====
   if(e.target.closest('#btnProjectDelete')){
     const ids = [...document.querySelectorAll('#reportBody input[type="checkbox"]:checked')].map(ch=>+ch.dataset.row);
     if(!ids.length) return alert('삭제할 필지를 선택하세요.');
@@ -532,20 +633,33 @@ document.addEventListener('click',(e)=>{
     redrawBadges();
   }
 
-  // 저장 모달
+  // ===== Report: 저장 모달 열기 =====
   if(e.target.closest('#btnProjectSave')){
     openModal('modalSave');
     setTimeout(()=> document.getElementById('projName').focus(), 50);
   }
+
+  // ===== Report: 저장 실행 → DB에 추가 =====
   if(e.target.closest('#btnModalSave')){
     const name = document.getElementById('projName').value.trim();
     if(!name) return alert('프로젝트 이름을 입력해주세요.');
-    log('프로젝트 저장(프론트 더미)', {name, items:REPORT_ROWS.map(r=>({order:r.order}))});
+    const rowsCopy = deepCopyRows(REPORT_ROWS);
+    const proj = {
+      id: Date.now(),
+      name,
+      rows: rowsCopy,
+      createdAt: new Date().toISOString()
+    };
+    PROJECTS.push(proj);
+    persistProjects();
+    log('프로젝트 저장(프론트 더미)', {name, items:rowsCopy.length});
     closeModal('modalSave');
-    alert('저장되었습니다. (UI 데모)');
+    alert('저장되었습니다.');
+    // DB 탭이 열려있다면 즉시 갱신
+    if(activeTabKey()==='db') renderDB();
   }
 
-  // 등본 조회(발급 연결 지점)
+  // ===== Report: 등본 조회(발급 연결 지점) =====
   if(e.target.closest('#btnDeedIssue')){
     const idxs = [...document.querySelectorAll('#reportBody input[type="checkbox"]:checked')].map(ch=>+ch.dataset.row);
     if(!idxs.length) return alert('등본을 조회할 필지를 선택하세요.');
@@ -555,7 +669,7 @@ document.addEventListener('click',(e)=>{
     refreshTable();
   }
 
-  // 요약 보기
+  // ===== Report: 요약 보기 =====
   const btnView = e.target.closest('.icon-btn[data-act="view"]');
   if(btnView){
     const idx = +btnView.dataset.idx;
@@ -568,10 +682,32 @@ document.addEventListener('click',(e)=>{
     openModal('modalDeedView');
   }
 
-  // 모달 닫기
+  // ===== 공통: 모달 닫기 =====
   if(e.target.matches('[data-modal-close]')) {
     const modal = e.target.closest('.modal');
     if(modal) modal.hidden = true;
+  }
+
+  // ===== DB: 카드 토글 / 지도 재표시 =====
+  const card = e.target.closest('.db-card');
+  if(card && (e.target.closest('.db-toggle') || e.target.closest('.db-head .proj-name') || e.target.closest('.db-head') )){
+    const body = card.querySelector('.db-body');
+    const pidx = +card.dataset.pidx;
+    const opened = body.hasAttribute('hidden') ? false : true;
+    if(opened){ body.setAttribute('hidden',''); }
+    else { body.removeAttribute('hidden'); showProjectOnMap(PROJECTS[pidx]); }
+  }
+
+  // ===== DB: 선택 삭제 =====
+  if(e.target.closest('#btnDbDeleteSel')){
+    const ids = [...document.querySelectorAll('.db-chk:checked')].map(ch=> +ch.dataset.pidx);
+    if(!ids.length) return alert('삭제할 프로젝트를 선택하세요.');
+    const keep = PROJECTS.filter((_, idx)=> !ids.includes(idx));
+    PROJECTS = keep;
+    persistProjects();
+    renderDB();
+    // 지도 배지 정리
+    selectionBadges.clearLayers();
   }
 });
 
@@ -581,3 +717,6 @@ function closeModal(id){ const el = document.getElementById(id); if(el) el.hidde
 
 /* 유틸 */
 function activeTabKey(){ const btn = document.querySelector('#leftbar .i.active'); return btn?.dataset?.tab || 'filter'; }
+
+/* 초기화: 프로젝트 불러오기 */
+loadProjects();

@@ -149,6 +149,7 @@ body{
 .report-toolbar{display:flex;align-items:center;justify-content:space-between;padding:8px 10px}
 .report-actions{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
 .summary{font-size:12.5px;color:#6b7280}
+.summary.small{font-size:12px}
 
 /* 아이콘(필터 톤과 일관) */
 .icon-square{width:34px;height:34px;border-radius:10px;border:1px solid #e5e7eb;background:#fff;display:grid;place-items:center;cursor:pointer}
@@ -188,7 +189,6 @@ td.deed-cell{ text-align:center; }
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.25);display:grid;place-items:center;z-index:3000}
 .modal[hidden]{display:none}
 .modal-card{width:min(520px,92vw);background:#fff;border:1px solid var(--ui-border);border-radius:16px;box-shadow:var(--shadow);overflow:hidden;position:relative}
-.modal-x{position:absolute;top:10px;right:12px; /* 우측 상단 */ all:unset;cursor:pointer;font-size:22px;line-height:1;padding:2px 6px;border-radius:6px}
 .modal-head{padding:14px 16px 0 16px}
 .modal-icon{width:56px;height:56px;border-radius:50%;display:grid;place-items:center;background:color-mix(in oklab, var(--key) 16%, white);border:1px solid #f1eadf}
 .modal-icon i{width:26px;height:26px;color:var(--key)}
@@ -210,3 +210,16 @@ td.deed-cell{ text-align:center; }
 .seg-btn:hover{background:#fff6e6}
 .seg-btn.active{background:var(--key);color:#fff}
 .map-controls .basemap-switch{ align-self:flex-end; }
+
+/* ===== DB 탭 ===== */
+.db-wrap{display:flex;flex-direction:column;gap:12px}
+.db-toolbar{display:flex;align-items:center;justify-content:space-between;padding:8px 10px}
+.db-actions{display:flex;gap:8px;align-items:center}
+.db-list{display:flex;flex-direction:column;gap:10px}
+.db-card{border:1px solid var(--ui-border);border-radius:12px;box-shadow:var(--shadow);overflow:hidden;background:#fff}
+.db-head{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:10px;padding:10px 12px;cursor:pointer}
+.db-title .proj-name{font-weight:800}
+.db-title .proj-sub{font-size:12px}
+.db-toggle{all:unset;cursor:pointer;display:grid;place-items:center;width:28px;height:28px;border:1px solid #e5e7eb;border-radius:8px;background:#fff}
+.db-body{padding:8px 10px}
+.empty{padding:12px}

@@ -14,7 +14,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="anonymous">
 
   <!-- App CSS -->
-  <link rel="stylesheet" href="{% static 'main/style.css' %}?v=r5">
+  <link rel="stylesheet" href="{% static 'main/style.css' %}?v=r6">
 </head>
 <body>
   <div class="app">
@@ -107,7 +107,7 @@
           </div>
         </div>
 
-        <!-- ===== B 그룹 이후(용도지역, 생태, 산사태, 식생, 도시생태, 이격거리) ===== -->
+        <!-- ===== B 그룹 이후 ===== -->
         <div class="acc-item" data-key="zoning" data-group="B" data-bmode="single"
           style="--tint: var(--b-zoning); --strip: var(--b-zoning); --tgl-color: var(--b-zoning);">
           <button class="acc-head" type="button" aria-expanded="false">
@@ -370,6 +370,6 @@
   <script>window.VWORLD_API_KEY = "{{ VWORLD_KEY }}";</script>
 
   <!-- App JS -->
-  <script src="{% static 'main/script.js' %}?v=r5"></script>
+  <script src="{% static 'main/script.js' %}?v=r6"></script>
 </body>
 </html>
