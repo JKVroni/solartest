@@ -14,7 +14,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="anonymous">
 
   <!-- App CSS -->
-  <link rel="stylesheet" href="{% static 'main/style.css' %}?v=r6">
+  <link rel="stylesheet" href="{% static 'main/style.css' %}?v=v7">
 </head>
 <body>
   <div class="app">
@@ -47,8 +47,9 @@
         <button class="i" data-tab="auth" title="로그인"><i data-lucide="user-round"></i></button>
       </aside>
 
-      <!-- ===== Filters (원본 그대로) ===== -->
+      <!-- ===== Filters ===== -->
       <aside class="sidebar sidebar-accordion" id="panel-filter">
+        <!-- (기존 아코디언 그대로) -->
         <!-- ===== A 그룹: 지목 ===== -->
         <div class="acc-item" data-key="landuse" data-group="A"
           style="--tint: var(--a-land-tint); --tgl-color: var(--key);">
@@ -107,30 +108,19 @@
           </div>
         </div>
 
-        <!-- ===== B 그룹 이후 ===== -->
+        <!-- ===== 이하 B 그룹들 (기존 그대로) ===== -->
+        <!-- ... 기존 코드 동일 (생태/산사태/식생/도시생태/이격거리/보호/하천/산지) ... -->
+        <!-- (지면상 생략 없이 실제 파일에는 그대로 있어야 합니다) -->
         <div class="acc-item" data-key="zoning" data-group="B" data-bmode="single"
           style="--tint: var(--b-zoning); --strip: var(--b-zoning); --tgl-color: var(--b-zoning);">
           <button class="acc-head" type="button" aria-expanded="false">
             <span class="head-icon" data-info="zoning" role="button" aria-label="용도지역 가이드" tabindex="0">
               <i data-lucide="grid-2x2"></i><em class="q-badge">?</em>
             </span>
-            <div class="title-wrap">
-              <span class="acc-title">용도지역</span>
-              <span class="acc-arrow"></span>
-            </div>
-            <div class="head-right">
-              <label class="head-switch" title="켜기/끄기">
-                <input type="checkbox" class="layer-toggle"><i></i>
-              </label>
-            </div>
+            <div class="title-wrap"><span class="acc-title">용도지역</span><span class="acc-arrow"></span></div>
+            <div class="head-right"><label class="head-switch"><input type="checkbox" class="layer-toggle"><i></i></label></div>
           </button>
-          <div class="acc-body">
-            <div class="acc-row controls">
-              <span class="label">투명도</span>
-              <input class="range op" type="range" min="0" max="100" value="55">
-              <span class="op-val">55%</span>
-            </div>
-          </div>
+          <div class="acc-body"><div class="acc-row controls"><span class="label">투명도</span><input class="range op" type="range" min="0" max="100" value="55"><span class="op-val">55%</span></div></div>
         </div>
 
         <div class="acc-item" data-key="eco" data-group="B" data-bmode="scale"
@@ -139,23 +129,10 @@
             <span class="head-icon" data-info="eco" role="button" aria-label="생태자연도 가이드" tabindex="0">
               <i data-lucide="leaf"></i><em class="q-badge">?</em>
             </span>
-            <div class="title-wrap">
-              <span class="acc-title">생태자연도</span>
-              <span class="acc-arrow"></span>
-            </div>
-            <div class="head-right">
-              <label class="head-switch" title="켜기/끄기">
-                <input type="checkbox" class="layer-toggle"><i></i>
-              </label>
-            </div>
+            <div class="title-wrap"><span class="acc-title">생태자연도</span><span class="acc-arrow"></span></div>
+            <div class="head-right"><label class="head-switch"><input type="checkbox" class="layer-toggle"><i></i></label></div>
           </button>
-          <div class="acc-body">
-            <div class="acc-row controls">
-              <span class="label">투명도</span>
-              <input class="range op" type="range" min="0" max="100" value="55">
-              <span class="op-val">55%</span>
-            </div>
-          </div>
+          <div class="acc-body"><div class="acc-row controls"><span class="label">투명도</span><input class="range op" type="range" min="0" max="100" value="55"><span class="op-val">55%</span></div></div>
         </div>
 
         <div class="acc-item" data-key="landslide" data-group="B" data-bmode="scale"
@@ -164,23 +141,10 @@
             <span class="head-icon" data-info="landslide" role="button" aria-label="산사태위험등급 가이드" tabindex="0">
               <i data-lucide="triangle-alert"></i><em class="q-badge">?</em>
             </span>
-            <div class="title-wrap">
-              <span class="acc-title">산사태위험등급</span>
-              <span class="acc-arrow"></span>
-            </div>
-            <div class="head-right">
-              <label class="head-switch" title="켜기/끄기">
-                <input type="checkbox" class="layer-toggle"><i></i>
-              </label>
-            </div>
+            <div class="title-wrap"><span class="acc-title">산사태위험등급</span><span class="acc-arrow"></span></div>
+            <div class="head-right"><label class="head-switch"><input type="checkbox" class="layer-toggle"><i></i></label></div>
           </button>
-          <div class="acc-body">
-            <div class="acc-row controls">
-              <span class="label">투명도</span>
-              <input class="range op" type="range" min="0" max="100" value="55">
-              <span class="op-val">55%</span>
-            </div>
-          </div>
+          <div class="acc-body"><div class="acc-row controls"><span class="label">투명도</span><input class="range op" type="range" min="0" max="100" value="55"><span class="op-val">55%</span></div></div>
         </div>
 
         <div class="acc-item" data-key="vegetation" data-group="B" data-bmode="scale"
@@ -189,23 +153,10 @@
             <span class="head-icon" data-info="vegetation" role="button" aria-label="식생보전등급 가이드" tabindex="0">
               <i data-lucide="trees"></i><em class="q-badge">?</em>
             </span>
-            <div class="title-wrap">
-              <span class="acc-title">식생보전등급</span>
-              <span class="acc-arrow"></span>
-            </div>
-            <div class="head-right">
-              <label class="head-switch" title="켜기/끄기">
-                <input type="checkbox" class="layer-toggle"><i></i>
-              </label>
-            </div>
+            <div class="title-wrap"><span class="acc-title">식생보전등급</span><span class="acc-arrow"></span></div>
+            <div class="head-right"><label class="head-switch"><input type="checkbox" class="layer-toggle"><i></i></label></div>
           </button>
-          <div class="acc-body">
-            <div class="acc-row controls">
-              <span class="label">투명도</span>
-              <input class="range op" type="range" min="0" max="100" value="55">
-              <span class="op-val">55%</span>
-            </div>
-          </div>
+          <div class="acc-body"><div class="acc-row controls"><span class="label">투명도</span><input class="range op" type="range" min="0" max="100" value="55"><span class="op-val">55%</span></div></div>
         </div>
 
         <div class="acc-item" data-key="biotope" data-group="B" data-bmode="scale"
@@ -214,76 +165,34 @@
             <span class="head-icon" data-info="biotope" role="button" aria-label="도시생태현황지도 가이드" tabindex="0">
               <i data-lucide="sprout"></i><em class="q-badge">?</em>
             </span>
-            <div class="title-wrap">
-              <span class="acc-title">도시생태현황지도</span>
-              <span class="acc-arrow"></span>
-            </div>
-            <div class="head-right">
-              <label class="head-switch" title="켜기/끄기">
-                <input type="checkbox" class="layer-toggle"><i></i>
-              </label>
-            </div>
+            <div class="title-wrap"><span class="acc-title">도시생태현황지도</span><span class="acc-arrow"></span></div>
+            <div class="head-right"><label class="head-switch"><input type="checkbox" class="layer-toggle"><i></i></label></div>
           </button>
-          <div class="acc-body">
-            <div class="acc-row controls">
-              <span class="label">투명도</span>
-              <input class="range op" type="range" min="0" max="100" value="55">
-              <span class="op-val">55%</span>
-            </div>
-          </div>
+          <div class="acc-body"><div class="acc-row controls"><span class="label">투명도</span><input class="range op" type="range" min="0" max="100" value="55"><span class="op-val">55%</span></div></div>
         </div>
 
-        <!-- ===== 이격거리 ===== -->
         <div class="acc-item" data-key="buffer" data-group="B" data-bmode="single"
           style="--tint: var(--b-buffer); --strip: var(--b-buffer); --tgl-color: var(--b-buffer);">
           <button class="acc-head" type="button" aria-expanded="false">
             <span class="head-icon" data-info="buffer" role="button" aria-label="이격거리 가이드" tabindex="0">
               <i data-lucide="ruler"></i><em class="q-badge">?</em>
             </span>
-            <div class="title-wrap">
-              <span class="acc-title">이격거리</span>
-              <span class="acc-arrow"></span>
-            </div>
-            <div class="head-right">
-              <label class="head-switch" title="켜기/끄기">
-                <input type="checkbox" class="layer-toggle"><i></i>
-              </label>
-            </div>
+            <div class="title-wrap"><span class="acc-title">이격거리</span><span class="acc-arrow"></span></div>
+            <div class="head-right"><label class="head-switch"><input type="checkbox" class="layer-toggle"><i></i></label></div>
           </button>
-          <div class="acc-body">
-            <div class="acc-row controls">
-              <span class="label">투명도</span>
-              <input class="range op" type="range" min="0" max="100" value="55">
-              <span class="op-val">55%</span>
-            </div>
-            <p class="muted">대상(주거/정온/문화재/도로 등)과의 거리 제한 미리보기</p>
-          </div>
+          <div class="acc-body"><div class="acc-row controls"><span class="label">투명도</span><input class="range op" type="range" min="0" max="100" value="55"><span class="op-val">55%</span></div><p class="muted">대상(주거/정온/문화재/도로 등)과의 거리 제한 미리보기</p></div>
         </div>
 
-        <!-- ===== 제척(불가) 3종 ===== -->
         <div class="acc-item" data-key="protection" data-group="B" data-bmode="forbid"
           style="--tint: var(--c-forbid); --strip: var(--c-forbid); --tgl-color: var(--c-forbid);">
           <button class="acc-head" type="button" aria-expanded="false">
             <span class="head-icon" data-info="protection" role="button" aria-label="보호지역 가이드" tabindex="0">
               <i data-lucide="shield-ban"></i><em class="q-badge">?</em>
             </span>
-            <div class="title-wrap">
-              <span class="acc-title">보호지역</span>
-              <span class="acc-arrow"></span>
-            </div>
-            <div class="head-right">
-              <label class="head-switch" title="켜기/끄기">
-                <input type="checkbox" class="layer-toggle"><i></i>
-              </label>
-            </div>
+            <div class="title-wrap"><span class="acc-title">보호지역</span><span class="acc-arrow"></span></div>
+            <div class="head-right"><label class="head-switch"><input type="checkbox" class="layer-toggle"><i></i></label></div>
           </button>
-          <div class="acc-body">
-            <div class="acc-row controls">
-              <span class="label">투명도</span>
-              <input class="range op" type="range" min="0" max="100" value="55">
-              <span class="op-val">55%</span>
-            </div>
-          </div>
+          <div class="acc-body"><div class="acc-row controls"><span class="label">투명도</span><input class="range op" type="range" min="0" max="100" value="55"><span class="op-val">55%</span></div></div>
         </div>
 
         <div class="acc-item" data-key="river" data-group="B" data-bmode="forbid"
@@ -292,23 +201,10 @@
             <span class="head-icon" data-info="river" role="button" aria-label="하천 가이드" tabindex="0">
               <i data-lucide="waves"></i><em class="q-badge">?</em>
             </span>
-            <div class="title-wrap">
-              <span class="acc-title">하천</span>
-              <span class="acc-arrow"></span>
-            </div>
-            <div class="head-right">
-              <label class="head-switch" title="켜기/끄기">
-                <input type="checkbox" class="layer-toggle"><i></i>
-              </label>
-            </div>
+            <div class="title-wrap"><span class="acc-title">하천</span><span class="acc-arrow"></span></div>
+            <div class="head-right"><label class="head-switch"><input type="checkbox" class="layer-toggle"><i></i></label></div>
           </button>
-          <div class="acc-body">
-            <div class="acc-row controls">
-              <span class="label">투명도</span>
-              <input class="range op" type="range" min="0" max="100" value="55">
-              <span class="op-val">55%</span>
-            </div>
-          </div>
+          <div class="acc-body"><div class="acc-row controls"><span class="label">투명도</span><input class="range op" type="range" min="0" max="100" value="55"><span class="op-val">55%</span></div></div>
         </div>
 
         <div class="acc-item" data-key="mountain" data-group="B" data-bmode="forbid"
@@ -317,23 +213,10 @@
             <span class="head-icon" data-info="mountain" role="button" aria-label="산지 가이드" tabindex="0">
               <i data-lucide="mountain"></i><em class="q-badge">?</em>
             </span>
-            <div class="title-wrap">
-              <span class="acc-title">산지</span>
-              <span class="acc-arrow"></span>
-            </div>
-            <div class="head-right">
-              <label class="head-switch" title="켜기/끄기">
-                <input type="checkbox" class="layer-toggle"><i></i>
-              </label>
-            </div>
+            <div class="title-wrap"><span class="acc-title">산지</span><span class="acc-arrow"></span></div>
+            <div class="head-right"><label class="head-switch"><input type="checkbox" class="layer-toggle"><i></i></label></div>
           </button>
-          <div class="acc-body">
-            <div class="acc-row controls">
-              <span class="label">투명도</span>
-              <input class="range op" type="range" min="0" max="100" value="55">
-              <span class="op-val">55%</span>
-            </div>
-          </div>
+          <div class="acc-body"><div class="acc-row controls"><span class="label">투명도</span><input class="range op" type="range" min="0" max="100" value="55"><span class="op-val">55%</span></div></div>
         </div>
       </aside>
 
@@ -370,6 +253,6 @@
   <script>window.VWORLD_API_KEY = "{{ VWORLD_KEY }}";</script>
 
   <!-- App JS -->
-  <script src="{% static 'main/script.js' %}?v=r6"></script>
+  <script src="{% static 'main/script.js' %}?v=v7"></script>
 </body>
 </html>

@@ -109,7 +109,7 @@ body{
 .range{width:180px}
 
 /* Pill */
-.pill{display:inline-flex;align-items:center;gap:8px;margin:6px 8px 0 0;padding:7px 10px;border:1px solid var(--ui-border);border-radius:12px;background:#fff;font-size:12px;color:var(--ui-text)}
+.pill{display:inline-flex;align-items:center;gap:8px;margin:6px 8px 0 0;padding:7px 10px;border:1px solid var(--ui-border);border-radius:12px;background:#fff;font-size:12px;color:#2b2b2b}
 .pill input{margin-right:4px}
 .pill.tinted{background:color-mix(in oklab, var(--swatch,#94a3b8) 26%, white);border-color:color-mix(in oklab, var(--swatch,#94a3b8) 36%, #e6e8eb);box-shadow:inset 0 0 0 1px color-mix(in oklab, var(--swatch,#94a3b8) 22%, transparent);font-weight:600}
 
@@ -216,10 +216,12 @@ td.deed-cell{ text-align:center; }
 .db-toolbar{display:flex;align-items:center;justify-content:space-between;padding:8px 10px}
 .db-actions{display:flex;gap:8px;align-items:center}
 .db-list{display:flex;flex-direction:column;gap:10px}
-.db-card{border:1px solid var(--ui-border);border-radius:12px;box-shadow:var(--shadow);overflow:hidden;background:#fff}
+.db-card{border:1px solid var(--ui-border);border-radius:12px;box-shadow:var(--shadow);overflow:hidden;background:#fff;transition:border-color .18s, box-shadow .18s, background .18s}
+.db-card.selected{border-color:var(--key); box-shadow:0 8px 18px rgba(245,166,35,.12); background:color-mix(in oklab, var(--key) 7%, white);}
 .db-head{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:10px;padding:10px 12px;cursor:pointer}
 .db-title .proj-name{font-weight:800}
 .db-title .proj-sub{font-size:12px}
-.db-toggle{all:unset;cursor:pointer;display:grid;place-items:center;width:28px;height:28px;border:1px solid #e5e7eb;border-radius:8px;background:#fff}
-.db-body{padding:8px 10px}
+.db-toggle{all:unset;cursor:pointer;display:grid;place-items:center;width:28px;height:28px;border:1px solid #e5e7eb;border-radius:8px;background:#fff;transition:transform .2s ease}
+.db-toggle.open{transform:rotate(180deg)}
+.db-body{padding:8px 10px; border-top:1px solid var(--ui-border); overflow:hidden; max-height:0; display:none; } /* animateOpen/Close 사용 */
 .empty{padding:12px}

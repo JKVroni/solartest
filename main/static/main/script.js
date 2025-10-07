@@ -92,7 +92,7 @@ document.getElementById('chkParcel')?.addEventListener('change', (e)=>{
   else{ if(parcelLayer) map.removeLayer(parcelLayer); }
 });
 
-/* ========= 필터 설정(원본 유지) ========= */
+/* ========= 필터 설정 ========= */
 const FILTER_CONFIG = {
   landuse:   { group:'A', baseOpacity:1.0 },
   owner:     { group:'A', baseOpacity:1.0 },
@@ -311,11 +311,13 @@ let REPORT_ROWS = [];
 /* ======= 프로젝트 저장/로드 (DB 탭 연계) ======= */
 const LS_KEY = 'autosolar_projects_v1';
 let PROJECTS = [];
+let CURRENT_PROJECT_IDX = null; // 지도에 표시중인 프로젝트 index (DB 탭 선택 표시용)
 
 function loadProjects(){
   try{
     const raw = localStorage.getItem(LS_KEY);
     PROJECTS = raw ? JSON.parse(raw) : [];
+    PROJECTS.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
   }catch(_){ PROJECTS = []; }
 }
 function persistProjects(){
@@ -387,10 +389,10 @@ const reportEl = (()=>{
           <div class="modal-icon"><i data-lucide="folder-plus"></i></div>
         </div>
         <div class="modal-title">프로젝트 저장</div>
-        <div class="modal-sub">프로젝트 이름을 입력해주세요.</div>
+        <div class="modal-sub">프로젝트 이름을 입력해주세요. (체크된 항목만 저장)</div>
         <div class="modal-body">
           <label class="field">
-            <input id="projName" type="text" placeholder="예) 청주_서남_1차" />
+            <input id="projName" type="text" placeholder="예) 청주1" />
           </label>
         </div>
         <div class="modal-foot">
@@ -574,8 +576,9 @@ function renderDB(){
 
   list.innerHTML = PROJECTS.map((p, idx)=>{
     const total = calcTotalArea(p.rows).toLocaleString();
+    const selectedCls = (idx === CURRENT_PROJECT_IDX) ? ' selected' : '';
     return `
-    <div class="db-card" data-pidx="${idx}">
+    <div class="db-card${selectedCls}" data-pidx="${idx}">
       <div class="db-head">
         <label class="chk"><input type="checkbox" class="db-chk" data-pidx="${idx}"><i></i></label>
         <div class="db-title">
@@ -614,6 +617,22 @@ function renderDB(){
   if (window.lucide?.createIcons) { window.lucide.createIcons(); }
 }
 
+/* ====== DB 아코디언 애니메이션 ====== */
+function expandDbCard(card){
+  const body = card.querySelector('.db-body');
+  if(!body || !body.hasAttribute('hidden') && body.style.display==='block') return;
+  body.hidden = false;
+  animateOpen(body);
+  card.querySelector('.db-toggle')?.classList.add('open');
+}
+function collapseDbCard(card){
+  const body = card.querySelector('.db-body');
+  if(!body || body.hasAttribute('hidden')) return;
+  animateClose(body);
+  setTimeout(()=>{ body.hidden = true; }, 230);
+  card.querySelector('.db-toggle')?.classList.remove('open');
+}
+
 /* 테이블/모달/DB 이벤트 */
 document.addEventListener('change',(e)=>{
   if(e.target.id==='chkAll'){
@@ -639,23 +658,21 @@ document.addEventListener('click',(e)=>{
     setTimeout(()=> document.getElementById('projName').focus(), 50);
   }
 
-  // ===== Report: 저장 실행 → DB에 추가 =====
+  // ===== Report: 저장 실행 → “체크된 항목만” DB에 추가 =====
   if(e.target.closest('#btnModalSave')){
     const name = document.getElementById('projName').value.trim();
     if(!name) return alert('프로젝트 이름을 입력해주세요.');
-    const rowsCopy = deepCopyRows(REPORT_ROWS);
-    const proj = {
-      id: Date.now(),
-      name,
-      rows: rowsCopy,
-      createdAt: new Date().toISOString()
-    };
-    PROJECTS.push(proj);
+    const checkedIdxs = [...document.querySelectorAll('#reportBody input[type="checkbox"]:checked')].map(ch=> +ch.dataset.row);
+    if(checkedIdxs.length===0) return alert('저장할 필지를 선택해주세요.');
+    const rowsCopy = deepCopyRows(checkedIdxs.map(i=> REPORT_ROWS[i]).filter(Boolean));
+
+    const proj = { id: Date.now(), name, rows: rowsCopy, createdAt: new Date().toISOString() };
+    PROJECTS.unshift(proj);
     persistProjects();
-    log('프로젝트 저장(프론트 더미)', {name, items:rowsCopy.length});
+    log('프로젝트 저장(체크 항목만)', {name, items:rowsCopy.length});
     closeModal('modalSave');
     alert('저장되었습니다.');
-    // DB 탭이 열려있다면 즉시 갱신
+
     if(activeTabKey()==='db') renderDB();
   }
 
@@ -688,26 +705,42 @@ document.addEventListener('click',(e)=>{
     if(modal) modal.hidden = true;
   }
 
-  // ===== DB: 카드 토글 / 지도 재표시 =====
-  const card = e.target.closest('.db-card');
-  if(card && (e.target.closest('.db-toggle') || e.target.closest('.db-head .proj-name') || e.target.closest('.db-head') )){
+  // ===== DB: 카드 토글(아래 화살표 아이콘으로만) =====
+  if(e.target.closest('.db-toggle')){
+    const card = e.target.closest('.db-card');
     const body = card.querySelector('.db-body');
-    const pidx = +card.dataset.pidx;
-    const opened = body.hasAttribute('hidden') ? false : true;
-    if(opened){ body.setAttribute('hidden',''); }
-    else { body.removeAttribute('hidden'); showProjectOnMap(PROJECTS[pidx]); }
+    if(body.hasAttribute('hidden')) expandDbCard(card);
+    else collapseDbCard(card);
+    return; // 토글 클릭은 더 이상 처리하지 않음
+  }
+
+  // ===== DB: 카드 선택(체크박스/토글 제외하고 카드 클릭 시) → 지도 표시 + 강조 =====
+  const clickedCard = e.target.closest('.db-card');
+  if(clickedCard){
+    const hitToggle = e.target.closest('.db-toggle');
+    const hitChk    = e.target.closest('.chk');
+    if(!hitToggle && !hitChk){
+      const idx = +clickedCard.dataset.pidx;
+      CURRENT_PROJECT_IDX = idx;
+      // 선택 강조
+      document.querySelectorAll('.db-card').forEach(c=> c.classList.remove('selected'));
+      clickedCard.classList.add('selected');
+      // 지도 표시
+      const proj = PROJECTS[idx];
+      if(proj) showProjectOnMap(proj);
+    }
   }
 
   // ===== DB: 선택 삭제 =====
   if(e.target.closest('#btnDbDeleteSel')){
     const ids = [...document.querySelectorAll('.db-chk:checked')].map(ch=> +ch.dataset.pidx);
     if(!ids.length) return alert('삭제할 프로젝트를 선택하세요.');
-    const keep = PROJECTS.filter((_, idx)=> !ids.includes(idx));
-    PROJECTS = keep;
+    PROJECTS = PROJECTS.filter((_, idx)=> !ids.includes(idx));
     persistProjects();
     renderDB();
-    // 지도 배지 정리
     selectionBadges.clearLayers();
+    // 현재 선택 해제
+    CURRENT_PROJECT_IDX = null;
   }
 });
 
