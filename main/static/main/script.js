@@ -108,7 +108,8 @@ const FILTER_CONFIG = {
   landslide: { group: 'B', bmode: 'scale', baseOpacity: 0.55 },
   vegetation: { group: 'B', bmode: 'scale', baseOpacity: 0.55 },
   biotope: { group: 'B', bmode: 'scale', baseOpacity: 0.55 },
-  buffer: { group: 'B', bmode: 'single', baseOpacity: 0.55, colorVar: '--b-buffer' },
+  buffer_res: { group:'B', bmode:'single', baseOpacity:0.55, colorVar:'--b-buffer' },
+  buffer_road:{ group:'B', bmode:'single', baseOpacity:0.55, colorVar:'--b-buffer' },
 
   protection: { group: 'B', bmode: 'forbid', baseOpacity: 0.55 },
   river: { group: 'B', bmode: 'forbid', baseOpacity: 0.55 },
@@ -120,6 +121,7 @@ const groups = {};
 let lastActiveB = null;
 let zCounter = 200;
 const B_KEYS = Object.keys(FILTER_CONFIG).filter(k => FILTER_CONFIG[k].group === 'B');
+const BUFFER_VALUES = { buffer_res: 300, buffer_road: 50 };
 
 function createPaneForKey(key) {
   const cfg = FILTER_CONFIG[key];
@@ -190,7 +192,28 @@ function setSectionActive(sec, isOn) {
 }
 
 /* 레이어 placeholder */
-function refreshLayerForKey(key) { const g = groups[key]; g.clearLayers(); const active = document.querySelector(`.acc-item[data-key="${key}"] .layer-toggle`)?.checked; if (!active) return; }
+function refreshLayerForKey(key){
+  const g = groups[key];
+  g.clearLayers();
+  const active = document.querySelector(`.acc-item[data-key="${key}"] .layer-toggle`)?.checked;
+  if(!active) return;
+
+  // 이격거리 두 타입은 선택된 행 기준으로 원(circle) 미리보기
+  if (key === 'buffer_res' || key === 'buffer_road') {
+    const dist = BUFFER_VALUES[key] || 0;
+    if (dist <= 0) return;
+    const color = cssVar('--b-buffer') || '#9CA3AF';
+    REPORT_ROWS.forEach(r=>{
+      if(!r?._latlng) return;
+      const circle = L.circle(r._latlng, {
+        radius: dist,
+        color, weight:1, opacity:0.9,
+        fill:true, fillColor:color, fillOpacity:0.22
+      });
+      circle.addTo(g);
+    });
+  }
+}
 
 /* Info popover */
 const INFO_CONTENT = {
@@ -207,7 +230,8 @@ const INFO_CONTENT = {
   landslide: { title: '산사태위험등급', body: ['1~5등급', '1·2=회색(제척), 3~5=스케일'], legend: [['3', '--b-slide-3'], ['4', '--b-slide-4'], ['5', '--b-slide-5'], ['1·2(제척)', 'FORBID']] },
   vegetation: { title: '식생보전등급', body: ['Ⅰ~Ⅲ', 'Ⅰ=회색(제척), Ⅱ·Ⅲ=스케일'], legend: [['Ⅱ', '--b-veg-2'], ['Ⅲ', '--b-veg-3'], ['Ⅰ(제척)', 'FORBID']] },
   biotope: { title: '도시생태현황지도', body: ['1~5등급', '1·2=회색(제척), 3~5=스케일'], legend: [['3', '--b-bio-3'], ['4', '--b-bio-4'], ['5', '--b-bio-5'], ['1·2(제척)', 'FORBID']] },
-  buffer: { title: '이격거리', body: ['대상(주거/정온/문화재/도로 등)과의 거리 제한 미리보기'], legend: [['미리보기', '--b-buffer']] },
+  buffer_res:{ title:'주택 이격거리', body:['선택 지점/필지 기준 주택 이격거리 미리보기'], legend:[['미리보기','--b-buffer']]},
+  buffer_road:{ title:'도로 이격거리',  body:['선택 지점/필지 기준 도로 이격거리 미리보기'],  legend:[['미리보기','--b-buffer']]},
   protection: { title: '보호지역', body: ['초지, 사방지, 자연공원, 휴양림, 상수원·습지·야생생물 보호구역'], legend: [['제척', 'FORBID']] },
   river: { title: '하천', body: ['하천/소하천 구역'], legend: [['제척', 'FORBID']] },
   mountain: { title: '산지', body: ['보전산지, 백두대간보호지역, 산림보호구역'], legend: [['제척', 'FORBID']] }
@@ -260,7 +284,16 @@ document.querySelectorAll('.sidebar-accordion .acc-item').forEach(sec => {
   const key = sec.dataset.key;
   const cfg = FILTER_CONFIG[key] || {};
   const headToggle = sec.querySelector('.layer-toggle');
+  const distInput = sec.querySelector('input.buf-dist');
 
+  if (distInput) {
+    distInput.addEventListener('change', ()=>{
+      const target = distInput.dataset.target; // buffer_res | buffer_road
+      const v = Math.max(0, parseFloat(distInput.value) || 0);
+      BUFFER_VALUES[target] = v;
+      refreshLayerForKey(target);
+    });
+  }
   if (headToggle) headToggle.checked = false;
   if (cfg.group === 'A') setAllOptions(sec, false);
 
@@ -550,6 +583,8 @@ function reindexRows() {
   REPORT_ROWS.forEach((r, i) => r.order = i + 1);
   refreshTable();
   redrawBadges();
+  refreshLayerForKey('buffer_res');
+  refreshLayerForKey('buffer_road');
 }
 
 /* ===========================
@@ -579,6 +614,8 @@ map.on('click', (e) => {
 
   addNumberBadge(order, e.latlng);
   if (activeTabKey() === 'report') refreshTable();
+  refreshLayerForKey('buffer_res');
+  refreshLayerForKey('buffer_road');
 
   attachAddressToRow(REPORT_ROWS.length - 1, e.latlng.lat, e.latlng.lng);
 });
@@ -617,6 +654,8 @@ map.on('click', (e) => {
 
     addNumberBadge(order, ll);
     if (activeTabKey() === 'report') refreshTable();
+    refreshLayerForKey('buffer_res');
+    refreshLayerForKey('buffer_road');
 
     attachAddressToRow(REPORT_ROWS.length - 1, ll.lat, ll.lng);
   });
@@ -653,7 +692,7 @@ function makeReportTableHTML(rows){
     return `
       <tr>
         <td><label class="chk"><input type="checkbox" data-row="${i}"><i></i></label></td>
-        <td class="mono">${i+1}</td>
+        <td class="mono idx">${i+1}</td>
         <td class="addr ellipsis" title="${addr}">${addr}</td>
         <td class="num">${(r.area_m2||0).toLocaleString()}</td>
         <td class="deed-cell" style="text-align:center">${deed}</td>

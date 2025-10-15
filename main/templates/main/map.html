@@ -184,12 +184,14 @@
           </div>
         </div>
 
-        <div class="acc-item" data-key="buffer" data-group="B" data-bmode="single" style="--tint: var(--b-buffer); --strip: var(--b-buffer); --tgl-color: var(--b-buffer);">
+        <!-- 주택 이격거리 -->
+        <div class="acc-item" data-key="buffer_res" data-group="B" data-bmode="single"
+            style="--tint: var(--b-buffer); --strip: var(--b-buffer); --tgl-color: var(--b-buffer);">
           <button class="acc-head" type="button" aria-expanded="false">
-            <span class="head-icon" data-info="buffer" role="button" aria-label="이격거리 가이드" tabindex="0">
-              <i data-lucide="ruler"></i><em class="q-badge">?</em>
+            <span class="head-icon" data-info="buffer_res" role="button" aria-label="주택 이격거리 가이드" tabindex="0">
+              <i data-lucide="home"></i><em class="q-badge">?</em>
             </span>
-            <div class="title-wrap"><span class="acc-title">이격거리</span><span class="acc-arrow"></span></div>
+            <div class="title-wrap"><span class="acc-title">주택 이격거리</span><span class="acc-arrow"></span></div>
             <div class="head-right"><label class="head-switch"><input type="checkbox" class="layer-toggle"><i></i></label></div>
           </button>
           <div class="acc-body">
@@ -198,7 +200,33 @@
               <input class="range op" type="range" min="0" max="100" value="55">
               <span class="op-val">55%</span>
             </div>
-            <p class="muted">대상(주거/정온/문화재/도로 등)과의 거리 제한 미리보기</p>
+            <div class="acc-row controls">
+              <span class="label">이격거리(m)</span>
+              <input class="buf-dist" type="number" min="0" step="10" value="300" style="width:100px" data-target="buffer_res">
+            </div>
+          </div>
+        </div>
+
+        <!-- 도로 이격거리 -->
+        <div class="acc-item" data-key="buffer_road" data-group="B" data-bmode="single"
+            style="--tint: var(--b-buffer); --strip: var(--b-buffer); --tgl-color: var(--b-buffer);">
+          <button class="acc-head" type="button" aria-expanded="false">
+            <span class="head-icon" data-info="buffer_road" role="button" aria-label="도로 이격거리 가이드" tabindex="0">
+              <i data-lucide="ruler"></i><em class="q-badge">?</em>
+            </span>
+            <div class="title-wrap"><span class="acc-title">도로 이격거리</span><span class="acc-arrow"></span></div>
+            <div class="head-right"><label class="head-switch"><input type="checkbox" class="layer-toggle"><i></i></label></div>
+          </button>
+          <div class="acc-body">
+            <div class="acc-row controls">
+              <span class="label">투명도</span>
+              <input class="range op" type="range" min="0" max="100" value="55">
+              <span class="op-val">55%</span>
+            </div>
+            <div class="acc-row controls">
+              <span class="label">이격거리(m)</span>
+              <input class="buf-dist" type="number" min="0" step="10" value="50" style="width:100px" data-target="buffer_road">
+            </div>
           </div>
         </div>
 
@@ -286,7 +314,7 @@
   <!-- 키 주입 -->
   <script>window.VWORLD_API_KEY = "{{ VWORLD_KEY }}";</script>
   <!-- 키 주입 (없으면 기본키 사용) -->
-  <script>window.VWORLD_API_KEY = "{{ VWORLD_KEY|default:'' }}" || "2999371B-F71D-32DA-85C3-ED9AB3C48403";</script>
+<script>window.VWORLD_API_KEY = "{{ VWORLD_KEY|default:'' }}" || "2999371B-F71D-32DA-85C3-ED9AB3C48403";</script>
 
 
   <!-- App JS -->

@@ -177,6 +177,8 @@ body{
 
 /* ===== Report 탭 ===== */
 .report-wrap{display:flex;flex-direction:column;gap:12px}
+.report-table td.num { text-align: center; }
+.report-table td.idx { text-align: center; }
 
 /* 툴바 */
 .card{border:1px solid var(--ui-border);border-radius:12px;box-shadow:var(--shadow);background:#fff}
