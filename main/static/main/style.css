@@ -1,35 +1,59 @@
 :root{
-  --key:#F5A623; --key-press:#E48F12;
-  --ui-text:#172036; --ui-muted:#6B7280; --ui-bg:#FFFFFF; --ui-surface:#F7F8FA; --ui-border:#E6E8EB;
-  --radius:12px; --radius-xl:16px; --shadow:0 10px 24px rgba(0,0,0,.06);
+  --key:#F5A623;
+  --key-press:#E48F12;
+  --ui-text:#172036;
+  --ui-muted:#6B7280;
+  --ui-bg:#FFFFFF;
+  --ui-surface:#F7F8FA;
+  --ui-border:#E6E8EB;
+  --radius:12px;
+  --radius-xl:16px;
+  --shadow:0 10px 24px rgba(0,0,0,.06);
 
   /* A seeds */
   --a-land-tint:#6A804A22;
   --a-own-tint:#4A90E222;
 
   /* A colors */
-  --a-land-farmland:#2BB673; --a-land-forest:#6A804A; --a-land-misc:#8FA3A6; --a-land-ditch:#5BA3D9;
-  --a-land-ranch:#D7A64A; --a-land-salt:#7FB7B9; --a-land-fish:#46B2A0;
-  --a-own-public:#26A69A; --a-own-shared:#8E6BD9; --a-own-private:#4A90E2; --a-own-corp:#2F4050;
+  --a-land-farmland:#2BB673;
+  --a-land-forest:#6A804A;
+  --a-land-misc:#8FA3A6;
+  --a-land-ditch:#5BA3D9;
+  --a-land-ranch:#D7A64A;
+  --a-land-salt:#7FB7B9;
+  --a-land-fish:#46B2A0;
+
+  --a-own-public:#26A69A;
+  --a-own-shared:#8E6BD9;
+  --a-own-private:#4A90E2;
+  --a-own-corp:#2F4050;
 
   /* B */
   --b-zoning:#4CAF50;
   --b-buffer:#9CA3AF;
 
   /* B scales */
-  --b-eco-2:#2E7D32; --b-eco-3:#81C784; --b-eco-sp:#43A047;
-  --b-slide-3:#D32F2F; --b-slide-4:#F57C00; --b-slide-5:#FFB74D;
-  --b-veg-2:#558B2F;  --b-veg-3:#C5E1A5;
-  --b-bio-3:#6D8A38;  --b-bio-5:#B7CD7A;
+  --b-eco-2:#2E7D32;
+  --b-eco-3:#81C784;
+  --b-eco-sp:#43A047;
 
-  --strip-eco:  linear-gradient(90deg,var(--b-eco-2),var(--b-eco-3),var(--b-eco-sp));
+  --b-slide-3:#D32F2F;
+  --b-slide-4:#F57C00;
+  --b-slide-5:#FFB74D;
+
+  --b-veg-2:#558B2F;
+  --b-veg-3:#C5E1A5;
+
+  --b-bio-3:#6D8A38;
+  --b-bio-5:#B7CD7A;
+
+  --strip-eco: linear-gradient(90deg,var(--b-eco-2),var(--b-eco-3),var(--b-eco-sp));
   --strip-slide:linear-gradient(90deg,var(--b-slide-3),var(--b-slide-4),var(--b-slide-5));
-  --strip-veg:  linear-gradient(90deg,var(--b-veg-2),var(--b-veg-3));
-  --strip-bio:  linear-gradient(90deg,var(--b-bio-3),var(--b-bio-5));
+  --strip-veg: linear-gradient(90deg,var(--b-veg-2),var(--b-veg-3));
+  --strip-bio: linear-gradient(90deg,var(--b-bio-3),var(--b-bio-5));
 
   --c-forbid:#9E9E9E;
 }
-
 html,body{height:100%}
 body{
   margin:0;background:var(--ui-bg);color:var(--ui-text);
@@ -38,13 +62,24 @@ body{
 }
 
 /* ===== 레이아웃 ===== */
-.app{ display:grid; grid-template-rows:64px minmax(0,1fr); height:100vh; height:100dvh; }
-.app-main{ display:grid; grid-template-columns:64px 360px 1fr; min-height:0; transition:grid-template-columns .22s ease; }
+.app{
+  display:grid;
+  grid-template-rows:64px minmax(0,1fr);
+  height:100vh; height:100dvh;
+}
+.app-main{
+  display:grid;
+  grid-template-columns:64px 360px 1fr;
+  min-height:0;
+  transition:grid-template-columns .22s ease;
+}
 .app-main.report-wide{ grid-template-columns:64px 640px 1fr; } /* 보고서 탭 확장 */
 
 .topbar{display:flex;align-items:center;gap:16px;border-bottom:1px solid var(--ui-border);padding:0 16px;background:#fff}
 .brand{display:flex;align-items:center;gap:10px}
-.brand-icon{height:28px}.brand-letter{height:20px}
+.brand-icon{height:28px}
+.brand-letter{height:20px}
+
 .search{margin-left:auto;display:flex;gap:8px;align-items:center}
 .search-input{width:520px;border:1px solid var(--ui-border);border-radius:12px;padding:10px 12px;outline:none;background:#fff}
 .search-input:focus{box-shadow:0 0 0 3px rgba(245,166,35,.15);border-color:#f3c276}
@@ -56,7 +91,6 @@ body{
 .btn-primary{background:var(--key);border-color:var(--key);color:#fff}
 .btn-primary:hover{background:var(--key-press);border-color:var(--key-press)}
 .btn-outline:hover{border-color:#f3c276;box-shadow:0 0 0 3px rgba(245,166,35,.12)}
-
 .chip{display:inline-flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid var(--ui-border);border-radius:12px;background:#fff}
 .chip-switch input{margin-right:6px}
 
@@ -224,4 +258,5 @@ td.deed-cell{ text-align:center; }
 .db-toggle{all:unset;cursor:pointer;display:grid;place-items:center;width:28px;height:28px;border:1px solid #e5e7eb;border-radius:8px;background:#fff;transition:transform .2s ease}
 .db-toggle.open{transform:rotate(180deg)}
 .db-body{padding:8px 10px; border-top:1px solid var(--ui-border); overflow:hidden; max-height:0; display:none; } /* animateOpen/Close 사용 */
+
 .empty{padding:12px}

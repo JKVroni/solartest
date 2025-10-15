@@ -50,16 +50,15 @@
       <!-- ===== Filters ===== -->
       <aside class="sidebar sidebar-accordion" id="panel-filter">
         <!-- (기존 아코디언 그대로) -->
+
         <!-- ===== A 그룹: 지목 ===== -->
-        <div class="acc-item" data-key="landuse" data-group="A"
-          style="--tint: var(--a-land-tint); --tgl-color: var(--key);">
+        <div class="acc-item" data-key="landuse" data-group="A" style="--tint: var(--a-land-tint); --tgl-color: var(--key);">
           <button class="acc-head" type="button" aria-expanded="false">
             <span class="head-icon" data-info="landuse" role="button" aria-label="지목 가이드" tabindex="0">
               <i data-lucide="map"></i><em class="q-badge">?</em>
             </span>
             <div class="title-wrap"><span class="acc-title">지목</span><span class="acc-arrow"></span></div>
-            <div class="head-right"><label class="head-switch"><input type="checkbox"
-                  class="layer-toggle"><i></i></label></div>
+            <div class="head-right"><label class="head-switch"><input type="checkbox" class="layer-toggle"><i></i></label></div>
           </button>
           <div class="acc-body">
             <div class="acc-row controls">
@@ -67,30 +66,24 @@
               <input class="range op" type="range" min="0" max="100" value="100">
               <span class="op-val">100%</span>
             </div>
-            <label class="pill"><input type="checkbox" class="opt" value="farmland"
-                data-color="--a-land-farmland">농지</label>
-            <label class="pill"><input type="checkbox" class="opt" value="forest"
-                data-color="--a-land-forest">산지</label>
+            <label class="pill"><input type="checkbox" class="opt" value="farmland" data-color="--a-land-farmland">농지</label>
+            <label class="pill"><input type="checkbox" class="opt" value="forest" data-color="--a-land-forest">산지</label>
             <label class="pill"><input type="checkbox" class="opt" value="misc" data-color="--a-land-misc">잡종지</label>
             <label class="pill"><input type="checkbox" class="opt" value="ditch" data-color="--a-land-ditch">구거</label>
-            <label class="pill"><input type="checkbox" class="opt" value="ranch"
-                data-color="--a-land-ranch">목장용지</label>
+            <label class="pill"><input type="checkbox" class="opt" value="ranch" data-color="--a-land-ranch">목장용지</label>
             <label class="pill"><input type="checkbox" class="opt" value="salt" data-color="--a-land-salt">염전</label>
-            <label class="pill"><input type="checkbox" class="opt" value="fishfarm"
-                data-color="--a-land-fish">양어장</label>
+            <label class="pill"><input type="checkbox" class="opt" value="fishfarm" data-color="--a-land-fish">양어장</label>
           </div>
         </div>
 
         <!-- ===== A 그룹: 소유자 ===== -->
-        <div class="acc-item" data-key="owner" data-group="A"
-          style="--tint: var(--a-own-tint); --tgl-color: var(--key);">
+        <div class="acc-item" data-key="owner" data-group="A" style="--tint: var(--a-own-tint); --tgl-color: var(--key);">
           <button class="acc-head" type="button" aria-expanded="false">
             <span class="head-icon" data-info="owner" role="button" aria-label="소유자 가이드" tabindex="0">
               <i data-lucide="id-card"></i><em class="q-badge">?</em>
             </span>
             <div class="title-wrap"><span class="acc-title">소유자</span><span class="acc-arrow"></span></div>
-            <div class="head-right"><label class="head-switch"><input type="checkbox"
-                  class="layer-toggle"><i></i></label></div>
+            <div class="head-right"><label class="head-switch"><input type="checkbox" class="layer-toggle"><i></i></label></div>
           </button>
           <div class="acc-body">
             <div class="acc-row controls">
@@ -98,21 +91,15 @@
               <input class="range op" type="range" min="0" max="100" value="100">
               <span class="op-val">100%</span>
             </div>
-            <label class="pill"><input type="checkbox" class="opt" value="public"
-                data-color="--a-own-public">국유지</label>
-            <label class="pill"><input type="checkbox" class="opt" value="shared"
-                data-color="--a-own-shared">공유지</label>
-            <label class="pill"><input type="checkbox" class="opt" value="private"
-                data-color="--a-own-private">개인</label>
+            <label class="pill"><input type="checkbox" class="opt" value="public" data-color="--a-own-public">국유지</label>
+            <label class="pill"><input type="checkbox" class="opt" value="shared" data-color="--a-own-shared">공유지</label>
+            <label class="pill"><input type="checkbox" class="opt" value="private" data-color="--a-own-private">개인</label>
             <label class="pill"><input type="checkbox" class="opt" value="corp" data-color="--a-own-corp">법인</label>
           </div>
         </div>
 
         <!-- ===== 이하 B 그룹들 (기존 그대로) ===== -->
-        <!-- ... 기존 코드 동일 (생태/산사태/식생/도시생태/이격거리/보호/하천/산지) ... -->
-        <!-- (지면상 생략 없이 실제 파일에는 그대로 있어야 합니다) -->
-        <div class="acc-item" data-key="zoning" data-group="B" data-bmode="single"
-          style="--tint: var(--b-zoning); --strip: var(--b-zoning); --tgl-color: var(--b-zoning);">
+        <div class="acc-item" data-key="zoning" data-group="B" data-bmode="single" style="--tint: var(--b-zoning); --strip: var(--b-zoning); --tgl-color: var(--b-zoning);">
           <button class="acc-head" type="button" aria-expanded="false">
             <span class="head-icon" data-info="zoning" role="button" aria-label="용도지역 가이드" tabindex="0">
               <i data-lucide="grid-2x2"></i><em class="q-badge">?</em>
@@ -120,11 +107,16 @@
             <div class="title-wrap"><span class="acc-title">용도지역</span><span class="acc-arrow"></span></div>
             <div class="head-right"><label class="head-switch"><input type="checkbox" class="layer-toggle"><i></i></label></div>
           </button>
-          <div class="acc-body"><div class="acc-row controls"><span class="label">투명도</span><input class="range op" type="range" min="0" max="100" value="55"><span class="op-val">55%</span></div></div>
+          <div class="acc-body">
+            <div class="acc-row controls">
+              <span class="label">투명도</span>
+              <input class="range op" type="range" min="0" max="100" value="55">
+              <span class="op-val">55%</span>
+            </div>
+          </div>
         </div>
 
-        <div class="acc-item" data-key="eco" data-group="B" data-bmode="scale"
-          style="--tint: var(--b-eco-3); --strip: var(--strip-eco); --tgl-color: var(--b-eco-3);">
+        <div class="acc-item" data-key="eco" data-group="B" data-bmode="scale" style="--tint: var(--b-eco-3); --strip: var(--strip-eco); --tgl-color: var(--b-eco-3);">
           <button class="acc-head" type="button" aria-expanded="false">
             <span class="head-icon" data-info="eco" role="button" aria-label="생태자연도 가이드" tabindex="0">
               <i data-lucide="leaf"></i><em class="q-badge">?</em>
@@ -132,11 +124,16 @@
             <div class="title-wrap"><span class="acc-title">생태자연도</span><span class="acc-arrow"></span></div>
             <div class="head-right"><label class="head-switch"><input type="checkbox" class="layer-toggle"><i></i></label></div>
           </button>
-          <div class="acc-body"><div class="acc-row controls"><span class="label">투명도</span><input class="range op" type="range" min="0" max="100" value="55"><span class="op-val">55%</span></div></div>
+          <div class="acc-body">
+            <div class="acc-row controls">
+              <span class="label">투명도</span>
+              <input class="range op" type="range" min="0" max="100" value="55">
+              <span class="op-val">55%</span>
+            </div>
+          </div>
         </div>
 
-        <div class="acc-item" data-key="landslide" data-group="B" data-bmode="scale"
-          style="--tint: var(--b-slide-4); --strip: var(--strip-slide); --tgl-color: var(--b-slide-4);">
+        <div class="acc-item" data-key="landslide" data-group="B" data-bmode="scale" style="--tint: var(--b-slide-4); --strip: var(--strip-slide); --tgl-color: var(--b-slide-4);">
           <button class="acc-head" type="button" aria-expanded="false">
             <span class="head-icon" data-info="landslide" role="button" aria-label="산사태위험등급 가이드" tabindex="0">
               <i data-lucide="triangle-alert"></i><em class="q-badge">?</em>
@@ -144,11 +141,16 @@
             <div class="title-wrap"><span class="acc-title">산사태위험등급</span><span class="acc-arrow"></span></div>
             <div class="head-right"><label class="head-switch"><input type="checkbox" class="layer-toggle"><i></i></label></div>
           </button>
-          <div class="acc-body"><div class="acc-row controls"><span class="label">투명도</span><input class="range op" type="range" min="0" max="100" value="55"><span class="op-val">55%</span></div></div>
+          <div class="acc-body">
+            <div class="acc-row controls">
+              <span class="label">투명도</span>
+              <input class="range op" type="range" min="0" max="100" value="55">
+              <span class="op-val">55%</span>
+            </div>
+          </div>
         </div>
 
-        <div class="acc-item" data-key="vegetation" data-group="B" data-bmode="scale"
-          style="--tint: var(--b-veg-2); --strip: var(--strip-veg); --tgl-color: var(--b-veg-2);">
+        <div class="acc-item" data-key="vegetation" data-group="B" data-bmode="scale" style="--tint: var(--b-veg-2); --strip: var(--strip-veg); --tgl-color: var(--b-veg-2);">
           <button class="acc-head" type="button" aria-expanded="false">
             <span class="head-icon" data-info="vegetation" role="button" aria-label="식생보전등급 가이드" tabindex="0">
               <i data-lucide="trees"></i><em class="q-badge">?</em>
@@ -156,11 +158,16 @@
             <div class="title-wrap"><span class="acc-title">식생보전등급</span><span class="acc-arrow"></span></div>
             <div class="head-right"><label class="head-switch"><input type="checkbox" class="layer-toggle"><i></i></label></div>
           </button>
-          <div class="acc-body"><div class="acc-row controls"><span class="label">투명도</span><input class="range op" type="range" min="0" max="100" value="55"><span class="op-val">55%</span></div></div>
+          <div class="acc-body">
+            <div class="acc-row controls">
+              <span class="label">투명도</span>
+              <input class="range op" type="range" min="0" max="100" value="55">
+              <span class="op-val">55%</span>
+            </div>
+          </div>
         </div>
 
-        <div class="acc-item" data-key="biotope" data-group="B" data-bmode="scale"
-          style="--tint: var(--b-bio-4); --strip: var(--strip-bio); --tgl-color: var(--b-bio-4);">
+        <div class="acc-item" data-key="biotope" data-group="B" data-bmode="scale" style="--tint: var(--b-bio-4); --strip: var(--strip-bio); --tgl-color: var(--b-bio-4);">
           <button class="acc-head" type="button" aria-expanded="false">
             <span class="head-icon" data-info="biotope" role="button" aria-label="도시생태현황지도 가이드" tabindex="0">
               <i data-lucide="sprout"></i><em class="q-badge">?</em>
@@ -168,11 +175,16 @@
             <div class="title-wrap"><span class="acc-title">도시생태현황지도</span><span class="acc-arrow"></span></div>
             <div class="head-right"><label class="head-switch"><input type="checkbox" class="layer-toggle"><i></i></label></div>
           </button>
-          <div class="acc-body"><div class="acc-row controls"><span class="label">투명도</span><input class="range op" type="range" min="0" max="100" value="55"><span class="op-val">55%</span></div></div>
+          <div class="acc-body">
+            <div class="acc-row controls">
+              <span class="label">투명도</span>
+              <input class="range op" type="range" min="0" max="100" value="55">
+              <span class="op-val">55%</span>
+            </div>
+          </div>
         </div>
 
-        <div class="acc-item" data-key="buffer" data-group="B" data-bmode="single"
-          style="--tint: var(--b-buffer); --strip: var(--b-buffer); --tgl-color: var(--b-buffer);">
+        <div class="acc-item" data-key="buffer" data-group="B" data-bmode="single" style="--tint: var(--b-buffer); --strip: var(--b-buffer); --tgl-color: var(--b-buffer);">
           <button class="acc-head" type="button" aria-expanded="false">
             <span class="head-icon" data-info="buffer" role="button" aria-label="이격거리 가이드" tabindex="0">
               <i data-lucide="ruler"></i><em class="q-badge">?</em>
@@ -180,11 +192,17 @@
             <div class="title-wrap"><span class="acc-title">이격거리</span><span class="acc-arrow"></span></div>
             <div class="head-right"><label class="head-switch"><input type="checkbox" class="layer-toggle"><i></i></label></div>
           </button>
-          <div class="acc-body"><div class="acc-row controls"><span class="label">투명도</span><input class="range op" type="range" min="0" max="100" value="55"><span class="op-val">55%</span></div><p class="muted">대상(주거/정온/문화재/도로 등)과의 거리 제한 미리보기</p></div>
+          <div class="acc-body">
+            <div class="acc-row controls">
+              <span class="label">투명도</span>
+              <input class="range op" type="range" min="0" max="100" value="55">
+              <span class="op-val">55%</span>
+            </div>
+            <p class="muted">대상(주거/정온/문화재/도로 등)과의 거리 제한 미리보기</p>
+          </div>
         </div>
 
-        <div class="acc-item" data-key="protection" data-group="B" data-bmode="forbid"
-          style="--tint: var(--c-forbid); --strip: var(--c-forbid); --tgl-color: var(--c-forbid);">
+        <div class="acc-item" data-key="protection" data-group="B" data-bmode="forbid" style="--tint: var(--c-forbid); --strip: var(--c-forbid); --tgl-color: var(--c-forbid);">
           <button class="acc-head" type="button" aria-expanded="false">
             <span class="head-icon" data-info="protection" role="button" aria-label="보호지역 가이드" tabindex="0">
               <i data-lucide="shield-ban"></i><em class="q-badge">?</em>
@@ -192,11 +210,16 @@
             <div class="title-wrap"><span class="acc-title">보호지역</span><span class="acc-arrow"></span></div>
             <div class="head-right"><label class="head-switch"><input type="checkbox" class="layer-toggle"><i></i></label></div>
           </button>
-          <div class="acc-body"><div class="acc-row controls"><span class="label">투명도</span><input class="range op" type="range" min="0" max="100" value="55"><span class="op-val">55%</span></div></div>
+          <div class="acc-body">
+            <div class="acc-row controls">
+              <span class="label">투명도</span>
+              <input class="range op" type="range" min="0" max="100" value="55">
+              <span class="op-val">55%</span>
+            </div>
+          </div>
         </div>
 
-        <div class="acc-item" data-key="river" data-group="B" data-bmode="forbid"
-          style="--tint: var(--c-forbid); --strip: var(--c-forbid); --tgl-color: var(--c-forbid);">
+        <div class="acc-item" data-key="river" data-group="B" data-bmode="forbid" style="--tint: var(--c-forbid); --strip: var(--c-forbid); --tgl-color: var(--c-forbid);">
           <button class="acc-head" type="button" aria-expanded="false">
             <span class="head-icon" data-info="river" role="button" aria-label="하천 가이드" tabindex="0">
               <i data-lucide="waves"></i><em class="q-badge">?</em>
@@ -204,11 +227,16 @@
             <div class="title-wrap"><span class="acc-title">하천</span><span class="acc-arrow"></span></div>
             <div class="head-right"><label class="head-switch"><input type="checkbox" class="layer-toggle"><i></i></label></div>
           </button>
-          <div class="acc-body"><div class="acc-row controls"><span class="label">투명도</span><input class="range op" type="range" min="0" max="100" value="55"><span class="op-val">55%</span></div></div>
+          <div class="acc-body">
+            <div class="acc-row controls">
+              <span class="label">투명도</span>
+              <input class="range op" type="range" min="0" max="100" value="55">
+              <span class="op-val">55%</span>
+            </div>
+          </div>
         </div>
 
-        <div class="acc-item" data-key="mountain" data-group="B" data-bmode="forbid"
-          style="--tint: var(--c-forbid); --strip: var(--c-forbid); --tgl-color: var(--c-forbid);">
+        <div class="acc-item" data-key="mountain" data-group="B" data-bmode="forbid" style="--tint: var(--c-forbid); --strip: var(--c-forbid); --tgl-color: var(--c-forbid);">
           <button class="acc-head" type="button" aria-expanded="false">
             <span class="head-icon" data-info="mountain" role="button" aria-label="산지 가이드" tabindex="0">
               <i data-lucide="mountain"></i><em class="q-badge">?</em>
@@ -216,21 +244,25 @@
             <div class="title-wrap"><span class="acc-title">산지</span><span class="acc-arrow"></span></div>
             <div class="head-right"><label class="head-switch"><input type="checkbox" class="layer-toggle"><i></i></label></div>
           </button>
-          <div class="acc-body"><div class="acc-row controls"><span class="label">투명도</span><input class="range op" type="range" min="0" max="100" value="55"><span class="op-val">55%</span></div></div>
+          <div class="acc-body">
+            <div class="acc-row controls">
+              <span class="label">투명도</span>
+              <input class="range op" type="range" min="0" max="100" value="55">
+              <span class="op-val">55%</span>
+            </div>
+          </div>
         </div>
       </aside>
 
       <!-- Map -->
       <section class="map-wrap">
         <div id="map" class="map-canvas"></div>
-
         <div class="map-controls">
           <div class="seg basemap-switch" role="group" aria-label="베이스맵 전환">
-            <button id="bm-base"   class="seg-btn active" title="기본지도">Base</button>
-            <button id="bm-sat"    class="seg-btn"         title="항공사진">Sat</button>
-            <button id="bm-hybrid" class="seg-btn"         title="하이브리드">Hybrid</button>
+            <button id="bm-base" class="seg-btn active" title="기본지도">Base</button>
+            <button id="bm-sat" class="seg-btn" title="항공사진">Sat</button>
+            <button id="bm-hybrid" class="seg-btn" title="하이브리드">Hybrid</button>
           </div>
-
           <div class="ctrl-stack">
             <button id="btnZoomIn" class="ctrl">＋</button>
             <button id="btnZoomOut" class="ctrl">－</button>
@@ -243,14 +275,19 @@
 
   <!-- Leaflet -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin="anonymous"></script>
+
   <!-- Lucide -->
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script>lucide.createIcons();</script>
+
   <!-- VectorGrid (MVT) -->
   <script src="https://unpkg.com/leaflet.vectorgrid@1.3.0/dist/Leaflet.VectorGrid.bundled.js" crossorigin="anonymous"></script>
 
   <!-- 키 주입 -->
   <script>window.VWORLD_API_KEY = "{{ VWORLD_KEY }}";</script>
+  <!-- 키 주입 (없으면 기본키 사용) -->
+  <script>window.VWORLD_API_KEY = "{{ VWORLD_KEY|default:'' }}" || "2999371B-F71D-32DA-85C3-ED9AB3C48403";</script>
+
 
   <!-- App JS -->
   <script src="{% static 'main/script.js' %}?v=v7"></script>
